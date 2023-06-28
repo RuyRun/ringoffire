@@ -1,4 +1,7 @@
-<app-player  *ngFor="let player of game.players ; let i = index;" class="player-postiton" [ngStyle]="{'top.px': 100+ ( i*90)}" [name]="player" [playerActiv]="i == game.currentPlayer"></app-player>
+<app-player  *ngFor="let player of game.players ; let i = index;" [class.hide-bar]="playerCount >9" class="player-postiton hide-mobile" [ngStyle]="{'top.px': 20+ ( i*70)}" [name]="player" [playerActiv]="i == game.currentPlayer"></app-player>
+<div class="player-postiton-mobile hide-desktop" [class.show-bar]="playerCount >9">
+    <app-player-mobile *ngFor="let player of game.players ; let i = index;"  [name]="player" [playerActiv]="i == game.currentPlayer"></app-player-mobile>
+</div>
 <div class="play-field">
     <div class="card-stack">
         <!-- Card Stack -->
@@ -17,5 +20,3 @@
 <button mat-fab color="primary" class="btn-add" (click)="openDialog()">
     <mat-icon>add</mat-icon>
   </button>
-
-  <button (click)="setNewGame()">UPDATE</button>

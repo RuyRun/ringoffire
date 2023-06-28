@@ -16,6 +16,7 @@ export class GameComponent implements OnInit {
   game: Game;
   item$: Observable<any>;
   filteredGame$: Observable<DocumentData>;
+  playerCount:number;
 
   constructor(public dialog: MatDialog, private route: ActivatedRoute, private firestore: Firestore) {
     const itemCollection = collection(this.firestore, 'games');
@@ -27,6 +28,8 @@ export class GameComponent implements OnInit {
     this.newGame();
     this.getURLId();
     this.setGameData();
+    
+    
 
   }
   getURLId() {
@@ -44,6 +47,8 @@ export class GameComponent implements OnInit {
       this.game.stack = e.game.stack;
       this.game.pickCardAnimation = e.game.pickCardAnimation;
       this.game.currentCard = e.game.currentCard;
+      this.playerCount = e.game.players.length;
+      console.log(this.playerCount);
     })
   }
 
