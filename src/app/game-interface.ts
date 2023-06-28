@@ -1,6 +1,10 @@
 export interface GameInterface {
-    players: string[];
-    stack: string[];
-    playedCards: string[];
-    currentPlayer: number;
+    game: {
+        players: string[];
+        stack: string[];
+        playedCards: string[];
+        currentPlayer: number;
+        pickCardAnimation: boolean;
+        currentCard: string;
+    };
 }
