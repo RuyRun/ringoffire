@@ -1,0 +1,13 @@
+.profile-container{
+    display: flex;
+    gap: 6px;
+    .profile-image {
+        width: 60px;
+        height: 60px;
+        cursor: pointer;
+        &:hover {
+            filter: brightness(1.15);
+        }
+    }
+}
+

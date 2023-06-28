@@ -1,13 +1,4 @@
 {
-  "targets": {
-    "rr-firebase-932b9": {
-      "hosting": {
-        "ringoffire": [
-          "rr-firebase-932b9"
-        ]
-      }
-    }
-  },
   "projects": {
     "default": "rr-firebase-932b9"
   }

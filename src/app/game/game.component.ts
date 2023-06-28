@@ -6,6 +6,7 @@ import { Firestore, collectionData, collection, setDoc, doc, addDoc, where, coll
 import { Observable, map } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { GameInterface } from '../game-interface';
+import { EditProfileComponent } from '../edit-profile/edit-profile.component';
 
 @Component({
   selector: 'app-game',
@@ -16,7 +17,8 @@ export class GameComponent implements OnInit {
   game: Game;
   item$: Observable<any>;
   filteredGame$: Observable<DocumentData>;
-  playerCount:number;
+  playerCount: number;
+  gameOver: boolean = false;
 
   constructor(public dialog: MatDialog, private route: ActivatedRoute, private firestore: Firestore) {
     const itemCollection = collection(this.firestore, 'games');
@@ -28,8 +30,8 @@ export class GameComponent implements OnInit {
     this.newGame();
     this.getURLId();
     this.setGameData();
-    
-    
+
+
 
   }
   getURLId() {
@@ -40,15 +42,15 @@ export class GameComponent implements OnInit {
 
   setGameData() {
     this.filteredGame$ = this.get();
-    this.filteredGame$.subscribe((e:GameInterface) => {
+    this.filteredGame$.subscribe((e: GameInterface) => {
       this.game.currentPlayer = e.game.currentPlayer;
       this.game.playedCards = e.game.playedCards;
       this.game.players = e.game.players;
+      this.game.playersImage = e.game.playersImage;
       this.game.stack = e.game.stack;
       this.game.pickCardAnimation = e.game.pickCardAnimation;
       this.game.currentCard = e.game.currentCard;
       this.playerCount = e.game.players.length;
-      console.log(this.playerCount);
     })
   }
 
@@ -56,7 +58,11 @@ export class GameComponent implements OnInit {
     let gameDate: GameInterface = this.game.toJson();
     this.update(gameDate);
   }
-
+  restartGame() {
+    let blabla: GameInterface = this.game.resetGame();
+    this.update(blabla)
+    this.gameOver = false;
+  }
   get() {
     const gameDocumentReference = doc(this.firestore, `games/${this.game.currentId}`);
     return docData(gameDocumentReference, { idField: 'id' });
@@ -84,13 +90,16 @@ export class GameComponent implements OnInit {
     dialogRef.afterClosed().subscribe((name: string) => {
       if (name && name.length > 0) {
         this.game.players.push(name);
+        this.game.playersImage.push('1.webp');
         this.saveGame();
       }
     });
   }
 
   takeCard() {
-    if (!this.game.pickCardAnimation) {
+    if (this.game.stack.length == 0) {
+      this.gameOver = true;
+    } else if (!this.game.pickCardAnimation) {
       this.game.currentCard = this.game.stack.pop();
       this.game.pickCardAnimation = true;
       this.game.currentPlayer++
@@ -107,6 +116,20 @@ export class GameComponent implements OnInit {
 
   newGame() {
     this.game = new Game();
-    // this.setNewGame();
+  }
+
+  updatePlayer(playerId: number) {
+    const dialogRef = this.dialog.open(EditProfileComponent, {});
+    dialogRef.afterClosed().subscribe((change: string) => {
+      if (change) {
+        if (change == 'DELETE') {
+          this.game.players.splice(playerId, 1);
+          this.game.playersImage.splice(playerId, 1);
+        } else {
+          this.game.playersImage[playerId] = change;
+        }
+        this.saveGame();
+      }
+    });
   }
 }

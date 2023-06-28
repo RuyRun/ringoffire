@@ -1,5 +1,6 @@
 export class Game {
     public players: string[] = [];
+    public playersImage: string[] = [];
     public stack: string[] = [];
     public playedCards: string[] = [];
     public currentPlayer: number = 0;
@@ -8,6 +9,10 @@ export class Game {
     public currentCard: string = '';
 
     constructor() {
+        this.setNewStack();
+        
+    }
+    setNewStack() {
         for (let i = 1; i <= 13; i++) {
             this.stack.push('ace_' + i);
             this.stack.push('clubs_' + i);
@@ -21,6 +26,7 @@ export class Game {
         return {
             game: {
                 players: this.players,
+                playersImage: this.playersImage,
                 stack: this.stack,
                 playedCards: this.playedCards,
                 currentPlayer: this.currentPlayer,
@@ -32,11 +38,30 @@ export class Game {
     public toJson2() {
         return {
             players: this.players,
+            playersImage: this.playersImage,
             stack: this.stack,
             playedCards: this.playedCards,
             currentPlayer: this.currentPlayer,
             pickCardAnimation: this.pickCardAnimation,
             currentCard: this.currentCard,
+        }
+    }
+
+    public resetGame() {
+        this.setNewStack();
+        this.playedCards = [];
+         this.currentPlayer= 0;
+         this.currentCard= '';
+         return {
+            game: {
+                players: this.players,
+                playersImage: this.playersImage,
+                stack: this.stack,
+                playedCards: this.playedCards,
+                currentPlayer: this.currentPlayer,
+                pickCardAnimation: this.pickCardAnimation,
+                currentCard: this.currentCard,
+            }
         }
     }
 }

@@ -84,6 +84,28 @@
     display: none !important;
 }
 
+
+app-player, app-player-mobile {
+    cursor: pointer;
+    &:hover {
+        filter: brightness(1.1);
+    }
+}
+
+.game-over-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    button {
+        font-size: 24px;
+    }
+    .game-over {
+        width: 200px;
+    }
+}
+
+
 @keyframes pick-card-animation {
     0% {
         transform: scale(1);
