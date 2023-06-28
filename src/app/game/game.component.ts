@@ -16,7 +16,6 @@ export class GameComponent implements OnInit {
   game: Game;
   item$: Observable<any>;
   filteredGame$: Observable<DocumentData>;
-  currentGame: any;
 
   constructor(public dialog: MatDialog, private route: ActivatedRoute, private firestore: Firestore) {
     const itemCollection = collection(this.firestore, 'games');
@@ -39,7 +38,6 @@ export class GameComponent implements OnInit {
   setGameData() {
     this.filteredGame$ = this.get();
     this.filteredGame$.subscribe((e:GameInterface) => {
-      this.currentGame = e;
       this.game.currentPlayer = e.game.currentPlayer;
       this.game.playedCards = e.game.playedCards;
       this.game.players = e.game.players;
